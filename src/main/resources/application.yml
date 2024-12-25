@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: social_net_otus
+  flyway:
+    #    baseline-on-migrate: true
+    default-schema: ${db.schema}
+    locations: "classpath:db/migrations"
+  datasource:
+    url:
+    username:
+    password:
+db:
+  schema:

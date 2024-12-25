@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  social_net_otus_db:
+    image: postgres:14.9
+    container_name: social_net_otus
+    ports:
+      - "5888:5432"
+    environment:
+      POSTGRES_DB: "social_net_otus"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Password1"
+      PG_DATA: ./snap/postgres/data/pgdata
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d social_net_otus" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+    volumes:
+      - social_net_otus:/var/lib/postgresql/data
+
+volumes:
+  social_net_otus:
+    external: false
