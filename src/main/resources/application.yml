@@ -1,4 +1,11 @@
 spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            clientId: github-client-id
+#            clientSecret: github-client-secret
   application:
     name: social_net_otus
   flyway:

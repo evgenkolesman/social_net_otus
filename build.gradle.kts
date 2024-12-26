@@ -36,12 +36,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
+//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.mapstruct:mapstruct:${mapStructVersion}")
     implementation("org.openapitools:jackson-databind-nullable:$jacksonOpenApiNullable")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.webjars:jquery:3.4.1")
+    implementation("org.webjars:bootstrap:5.0.0")
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:js-cookie:2.1.0")
+
+
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -72,9 +80,6 @@ tasks.withType<Test> {
 tasks.named("compileKotlin") {
     dependsOn(tasks.named("openApiGenerate"))
 }
-//tasks.named("compileJava") {
-//    dependsOn(tasks.named("openApiGenerate"))
-//}
 
 val generatedSourcesDir = "$rootDir/build/generated"
 
