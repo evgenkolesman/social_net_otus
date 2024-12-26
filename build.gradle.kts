@@ -36,12 +36,21 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
+//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.mapstruct:mapstruct:${mapStructVersion}")
+    implementation("org.mapstruct:mapstruct-processor:${mapStructVersion}")
     implementation("org.openapitools:jackson-databind-nullable:$jacksonOpenApiNullable")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.webjars:jquery:3.4.1")
+    implementation("org.webjars:bootstrap:5.0.0")
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:js-cookie:2.1.0")
+
+
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -49,6 +58,7 @@ dependencies {
 
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -68,12 +78,17 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-
 tasks.named("compileKotlin") {
     dependsOn(tasks.named("openApiGenerate"))
+//    dependsOn(tasks.named("kaptGenerateStubsKotlin"))
 }
-//tasks.named("compileJava") {
+
+//tasks.named("kaptGenerateStubsKotlin") {
 //    dependsOn(tasks.named("openApiGenerate"))
+//}
+
+//tasks.named("kaptGenerateStubsKotlin") {
+//    inputs.dir(tasks.named("openApiGenerate").get().outputs.files)
 //}
 
 val generatedSourcesDir = "$rootDir/build/generated"
@@ -115,5 +130,4 @@ openApiGenerate {
 
 sourceSets.named("main") {
     kotlin.srcDir(generatedSourcesDir)
-//    java.srcDir(generatedSourcesDir)
 }
