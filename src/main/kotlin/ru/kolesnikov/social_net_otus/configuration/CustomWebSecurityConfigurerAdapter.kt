@@ -2,64 +2,69 @@ package ru.kolesnikov.social_net_otus.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.ott.InMemoryOneTimeTokenService
 import org.springframework.security.authentication.ott.OneTimeTokenService
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import org.springframework.security.provisioning.JdbcUserDetailsManager
+import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.ott.OneTimeTokenGenerationSuccessHandler
+import org.springframework.security.web.authentication.ott.RedirectOneTimeTokenGenerationSuccessHandler
+import javax.sql.DataSource
 
 @Configuration
 @EnableWebSecurity
-class CustomWebSecurityConfigurerAdapter{
+class CustomWebSecurityConfigurerAdapter {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .authorizeHttpRequests { authz ->
-                authz
-                    .requestMatchers("/actuator/**", "/login", "/user/register").permitAll()
-                    .requestMatchers("/**").authenticated()
+            .authorizeHttpRequests { authorizeHttpRequests ->
+                authorizeHttpRequests
+//                    .requestMatchers("/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/logout").permitAll()
+                    .anyRequest().authenticated()
             }
             .httpBasic { }
-            .oneTimeTokenLogin {  }
+            .csrf { a -> a.disable() }
+            .oneTimeTokenLogin { }
 
         return http.build()
     }
 
-//    fun userDetailsService(): UserDetailsService {
-//        val user = User.withDefaultPasswordEncoder()
-//            .username("user")
-//            .password("password")
-//            .roles("USER")
-//            .build()
-//
-//        return InMemoryUserDetailsManager(user)
-//    }
-
-    private fun userDetailsService(): UserDetailsService {
-        val user = User.withDefaultPasswordEncoder()
-            .username("user")
-            .password("password")
-            .roles("USER")
-            .build()
-
-        return InMemoryUserDetailsManager(user)
+    @Bean
+    fun userDetailsService(dataSource: DataSource): UserDetailsManager {
+        val jdbcUserDetailsManager = JdbcUserDetailsManager(dataSource)
+//        jdbcUserDetailsManager.s(
+//            """
+//            CREATE TABLE  IF NOT EXISTS users
+//    (
+//        username text,
+//         password text,
+//         enabled boolean
+//    );
+//        """.trimIndent()
+//        )
+        return jdbcUserDetailsManager
     }
 
     @Bean
-    open fun oneTimeTokenService(): OneTimeTokenService {
+    fun oneTimeTokenService(): OneTimeTokenService {
         return InMemoryOneTimeTokenService()
+    }
+
+    @Bean
+    fun oneTimeTokenGenerationSuccessHandler(): OneTimeTokenGenerationSuccessHandler {
+        return RedirectOneTimeTokenGenerationSuccessHandler("/")
     }
 //
 //    private fun passwordEncoder(): PasswordEncoder {
 //        return PasswordEncoderFactories.createDelegatingPasswordEncoder()
 //    }
-
 
 
 }

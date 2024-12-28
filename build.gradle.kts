@@ -41,6 +41,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.mapstruct:mapstruct:${mapStructVersion}")
+    implementation("org.mapstruct:mapstruct-processor:${mapStructVersion}")
     implementation("org.openapitools:jackson-databind-nullable:$jacksonOpenApiNullable")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
@@ -57,6 +58,7 @@ dependencies {
 
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -76,10 +78,18 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-
 tasks.named("compileKotlin") {
     dependsOn(tasks.named("openApiGenerate"))
+//    dependsOn(tasks.named("kaptGenerateStubsKotlin"))
 }
+
+//tasks.named("kaptGenerateStubsKotlin") {
+//    dependsOn(tasks.named("openApiGenerate"))
+//}
+
+//tasks.named("kaptGenerateStubsKotlin") {
+//    inputs.dir(tasks.named("openApiGenerate").get().outputs.files)
+//}
 
 val generatedSourcesDir = "$rootDir/build/generated"
 
@@ -120,5 +130,4 @@ openApiGenerate {
 
 sourceSets.named("main") {
     kotlin.srcDir(generatedSourcesDir)
-//    java.srcDir(generatedSourcesDir)
 }

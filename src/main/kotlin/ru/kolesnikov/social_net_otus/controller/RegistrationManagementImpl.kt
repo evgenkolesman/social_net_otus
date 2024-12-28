@@ -1,7 +1,6 @@
 package ru.kolesnikov.social_net_otus.controller
 
 import org.springframework.http.ResponseEntity
-import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.web.bind.annotation.RestController
 import ru.kolesnikov.social_net_otus.model.LoginPost200Response
 import ru.kolesnikov.social_net_otus.model.LoginPostRequest
@@ -16,9 +15,7 @@ class RegistrationManagementImpl(
 ) : RegistrationApi {
 
     override fun loginPost(loginPostRequest: LoginPostRequest?): ResponseEntity<LoginPost200Response> {
-
-        service.login(loginPostRequest)
-        return ResponseEntity.ok(LoginPost200Response())
+        return ResponseEntity.ok(service.login(loginPostRequest))
     }
 
     override fun userGetIdGet(id: String): ResponseEntity<User> = ResponseEntity.ok(service.getUserById(id))

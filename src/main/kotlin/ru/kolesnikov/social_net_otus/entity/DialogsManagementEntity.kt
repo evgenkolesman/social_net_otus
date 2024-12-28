@@ -10,23 +10,18 @@ import java.util.*
 data class DialogsManagementEntity(
     @Id
     @Column("id")
-    private val id: UUID?,
+     val iden: UUID? = null,
     @Column("from")
-    private val from: String,
+     val from: String,
     @Column("to")
-    private val to: String,
+     val to: String,
     @Column("text")
-    private val text: String,
-    @Transient
-    private var isNew: Boolean,
+     val text: String,
 
     ) : Persistable<UUID> {
-    override fun getId(): UUID? = id
 
-    override fun isNew(): Boolean = isNew
+    override fun getId(): UUID? = iden
+    override fun isNew(): Boolean = iden == null
 
-    fun markNotNew() {
-        isNew = false
-    }
 
 }

@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
-import ru.kolesnikov.social_net_otus.entity.UserRegisterEntityMapper
 import ru.kolesnikov.social_net_otus.model.LoginPost200Response
 import ru.kolesnikov.social_net_otus.model.LoginPostRequest
 import ru.kolesnikov.social_net_otus.model.User
@@ -19,8 +18,7 @@ import java.util.*
 class RegistrationManagementService(
     private val userDetailsManager: UserDetailsManager,
     private val userRegisterRepository: UserRegisterRepository,
-    private val userRegisterEntityMapper: UserRegisterEntityMapper,
-    private val oneTimeTokenService: OneTimeTokenService,
+    private val oneTimeTokenService: OneTimeTokenService
 ) {
     fun login(loginPostRequest: LoginPostRequest?): LoginPost200Response {
         if (userDetailsManager.userExists(loginPostRequest?.id)) {
@@ -28,17 +26,18 @@ class RegistrationManagementService(
 
             if (loadUserByUsername.isAccountNonExpired) {
                 val token = oneTimeTokenService.generate(GenerateOneTimeTokenRequest(loginPostRequest?.id))
-                return LoginPost200Response(token.toString())
+                return LoginPost200Response(token.tokenValue)
             }
         }
-
         return LoginPost200Response()
     }
 
     fun getUserById(id: String): User? {
-        val entity = userRegisterRepository.findById(UUID.fromString(id))
-        return if (entity.isPresent) userRegisterEntityMapper.toUser(entity.get())
-        else null
+        val entityOpt = userRegisterRepository.findById(UUID.fromString(id))
+        return if (entityOpt.isPresent) {
+            val user = entityOpt.get()
+            return User(user.iden.toString(), user.firstName, user.secondName, user.birthdate, user.biography, user.city)
+        } else null
     }
 
     fun userRegister(userRegisterPostRequest: UserRegisterPostRequest?): UserRegisterPost200Response? {
@@ -49,7 +48,7 @@ class RegistrationManagementService(
             listOf(SimpleGrantedAuthority("USER"))
         )
         val userEntity = UserRegisterEntity(
-            id,
+            null,
             userDetails.username,
             userRegisterPostRequest?.firstName,
             userRegisterPostRequest?.secondName,
@@ -58,7 +57,7 @@ class RegistrationManagementService(
             userRegisterPostRequest?.city,
             userDetails.password
         )
-        userRegisterRepository.save(userEntity)
+        val user = userRegisterRepository.save(userEntity)
 
         userDetailsManager.createUser(userDetails)
         return UserRegisterPost200Response(id.toString())
