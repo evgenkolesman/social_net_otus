@@ -7,5 +7,5 @@ CREATE TABLE sno_user_register
     birthdate date,
     biography text,
     city text,
-    password text
+    password text not null
 )

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: social_net_otus
+
+  datasource:
+    url: jdbc:postgresql://localhost:5888/social_net_otus?currentSchema=${db.schema}
+    username: "postgres"
+    password: "Password1"
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+db:
+  schema: social_net_otus
+
+logging:
+  level:
+    sql: debug
+
+rsa:
+  private-key: classpath:private-key.pem
+  public-key: classpath:public-key.pem

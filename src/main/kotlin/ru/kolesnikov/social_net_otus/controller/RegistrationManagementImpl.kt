@@ -12,7 +12,7 @@ import ru.kolesnikov.social_net_otus.service.RegistrationManagementService
 @RestController
 class RegistrationManagementImpl(
     private val service: RegistrationManagementService,
-) : RegistrationApi {
+) : UserManagementAndRegistrationApi {
 
     override fun loginPost(loginPostRequest: LoginPostRequest?): ResponseEntity<LoginPost200Response> {
         return ResponseEntity.ok(service.login(loginPostRequest!!))
@@ -23,6 +23,10 @@ class RegistrationManagementImpl(
 
     override fun userRegisterPost(userRegisterPostRequest: UserRegisterPostRequest?): ResponseEntity<UserRegisterPost200Response> {
        return ResponseEntity.ok(service.userRegister(userRegisterPostRequest!!))
+    }
+
+    override fun userSearchGet(firstName: String, lastName: String): ResponseEntity<List<User>> {
+        return ResponseEntity.ok(service.userSearchGet(firstName, lastName))
     }
 
 }

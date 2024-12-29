@@ -7,19 +7,19 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
 import java.util.*
 
-@Table("sno_dialogs")
-data class DialogsManagementEntity(
+@Table("sno_posts")
+data class PostManagementEntity(
     @Id
     @Column("id")
      val iden: UUID? = null,
-    @Column("from")
-     val from: String,
-    @Column("to")
-     val to: String,
-    @Column("text")
+    @Column("login")
+     val login: String,
+    @Column("text_post")
      val text: String,
     @Column("time_modified")
-    val timeModified: String = Instant.now().toString(),
+    val timeModified: Instant = Instant.now(),
+    @Column("active")
+    val active: Boolean = true,
 
     ) : Persistable<UUID> {
 

@@ -48,24 +48,23 @@ dependencies {
     implementation("org.webjars:bootstrap:5.0.0")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:js-cookie:2.1.0")
+    implementation("org.postgresql:postgresql")
 
 
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
 
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapStructVersion}")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
+
+
+
+
 
 kotlin {
     compilerOptions {
@@ -75,6 +74,15 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-test")
+        implementation("org.testcontainers:junit-jupiter")
+        implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+        implementation("org.testcontainers:postgresql")
+        implementation("org.junit.platform:junit-platform-launcher")
+        implementation("io.rest-assured:rest-assured")
+    }
 }
 
 tasks.named("compileKotlin") {

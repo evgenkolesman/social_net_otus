@@ -10,12 +10,12 @@ import ru.kolesnikov.social_net_otus.service.DialogsManagementService
 class DialogsManagementImpl(private val service: DialogsManagementService) : DialogsManagementApi {
 
     override fun dialogUserIdListGet(userId: String):
-            ResponseEntity<List<DialogMessage>> = ResponseEntity.ok(service.dialogUserId(userId))
+            ResponseEntity<List<DialogMessage>> = ResponseEntity.ok(service.getDialogsByUserId(userId))
 
     override fun dialogUserIdSendPost(
         userId: String,
         dialogUserIdSendPostRequest: DialogUserIdSendPostRequest?
-    ): ResponseEntity<Unit> = ResponseEntity.ok(service.dialogUserId(userId, dialogUserIdSendPostRequest!!))
+    ): ResponseEntity<Unit> = ResponseEntity.ok(service.addDialogsByUserId(userId, dialogUserIdSendPostRequest!!))
 
 
 }
