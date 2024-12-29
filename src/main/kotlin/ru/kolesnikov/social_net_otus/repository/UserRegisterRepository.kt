@@ -4,4 +4,6 @@ import org.springframework.data.repository.CrudRepository
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
 import java.util.*
 
-interface UserRegisterRepository : CrudRepository<UserRegisterEntity, UUID?>
+interface UserRegisterRepository : CrudRepository<UserRegisterEntity, UUID?> {
+    fun findByUsername(id: String): Optional<UserRegisterEntity>
+}

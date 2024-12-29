@@ -11,7 +11,7 @@ data class UserRegisterEntity(
     @Id
     @Column("id")
      val iden: UUID? = null,
-    @Column("username")
+    @Column("user_id")
      val username: String? = null,
     @Column("first_name")
      val firstName: String? = null,

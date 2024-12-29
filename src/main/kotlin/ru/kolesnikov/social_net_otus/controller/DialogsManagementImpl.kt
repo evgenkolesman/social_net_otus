@@ -14,8 +14,8 @@ class DialogsManagementImpl(private val service: DialogsManagementService) : Dia
 
     override fun dialogUserIdSendPost(
         userId: String,
-        dialogUserIdSendPostRequest: DialogUserIdSendPostRequest?,
-    ): ResponseEntity<Unit> = ResponseEntity.ok(service.dialogUserId(userId, dialogUserIdSendPostRequest))
+        dialogUserIdSendPostRequest: DialogUserIdSendPostRequest?
+    ): ResponseEntity<Unit> = ResponseEntity.ok(service.dialogUserId(userId, dialogUserIdSendPostRequest!!))
 
 
 }

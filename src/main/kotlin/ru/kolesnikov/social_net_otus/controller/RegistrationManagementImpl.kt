@@ -15,14 +15,14 @@ class RegistrationManagementImpl(
 ) : RegistrationApi {
 
     override fun loginPost(loginPostRequest: LoginPostRequest?): ResponseEntity<LoginPost200Response> {
-        return ResponseEntity.ok(service.login(loginPostRequest))
+        return ResponseEntity.ok(service.login(loginPostRequest!!))
     }
 
     override fun userGetIdGet(id: String): ResponseEntity<User> = ResponseEntity.ok(service.getUserById(id))
 
 
     override fun userRegisterPost(userRegisterPostRequest: UserRegisterPostRequest?): ResponseEntity<UserRegisterPost200Response> {
-       return ResponseEntity.ok(service.userRegister(userRegisterPostRequest))
+       return ResponseEntity.ok(service.userRegister(userRegisterPostRequest!!))
     }
 
 }

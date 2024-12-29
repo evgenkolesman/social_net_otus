@@ -36,8 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
-//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.mapstruct:mapstruct:${mapStructVersion}")
@@ -80,16 +79,7 @@ tasks.withType<Test> {
 
 tasks.named("compileKotlin") {
     dependsOn(tasks.named("openApiGenerate"))
-//    dependsOn(tasks.named("kaptGenerateStubsKotlin"))
 }
-
-//tasks.named("kaptGenerateStubsKotlin") {
-//    dependsOn(tasks.named("openApiGenerate"))
-//}
-
-//tasks.named("kaptGenerateStubsKotlin") {
-//    inputs.dir(tasks.named("openApiGenerate").get().outputs.files)
-//}
 
 val generatedSourcesDir = "$rootDir/build/generated"
 

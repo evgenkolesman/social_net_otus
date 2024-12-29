@@ -11,7 +11,7 @@ class DialogsManagementService {
         return listOf()
     }
 
-    fun dialogUserId(userId: String, dialogUserIdSendPostRequest: DialogUserIdSendPostRequest?) {
+    fun dialogUserId(userId: String, dialogUserIdSendPostRequest: DialogUserIdSendPostRequest) {
         TODO("Not yet implemented")
     }
 }
