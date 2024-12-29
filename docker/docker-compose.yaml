@@ -6,7 +6,7 @@ services:
     ports:
       - "5888:5432"
     environment:
-      POSTGRES_DB: "social_net_otus"
+      POSTGRES_DB: social_net_otus
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "Password1"
       PG_DATA: ./snap/postgres/data/pgdata

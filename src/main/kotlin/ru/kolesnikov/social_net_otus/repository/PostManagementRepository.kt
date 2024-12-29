@@ -3,6 +3,8 @@ package ru.kolesnikov.social_net_otus.repository
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
 import ru.kolesnikov.social_net_otus.entity.PostManagementEntity
+import ru.kolesnikov.social_net_otus.model.Post
+import java.math.BigDecimal
 import java.util.*
 
 interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> {
@@ -26,6 +28,14 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
     """
     )
     fun updatePost(id: UUID, text: String): UUID?
+
+    @Query(
+        """
+        SELECT * FROM sno_posts limit :limit offset :offset  
+    """
+    )
+    fun getWithLiniNadOffset(offset: BigDecimal, limit: BigDecimal): List<Post>
+
 
 
 }

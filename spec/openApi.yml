@@ -9,28 +9,18 @@ paths:
         - User management and registration
       description: Упрощенный процесс аутентификации путем передачи идентификатор пользователя и получения токена для дальнейшего прохождения авторизации
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                id:
-                  $ref: '#/components/schemas/UserId'
-                password:
-                  type: string
-                  example: Секретная строка
-                  nullable: false
+              $ref: '#/components/schemas/LoginModel'
       responses:
         '200':
-          description: Успешная аутентификация
+          description: Логин
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    example: e4d2e6b0-cde2-42c5-aac3-0b8316f21e58
+                $ref: '#/components/schemas/LoginResponse'
         '400':
           description: Невалидные данные
         '404':
@@ -45,33 +35,11 @@ paths:
         - User management and registration
       description: Регистрация нового пользователя
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                user_id:
-                  type: string
-                  example: Логин
-                  nullable: false
-                first_name:
-                  type: string
-                  example: Имя
-                second_name:
-                  type: string
-                  example: Фамилия
-                birthdate:
-                  $ref: '#/components/schemas/BirthDate'
-                biography:
-                  type: string
-                  example: Хобби, интересы и т.п.
-                city:
-                  type: string
-                  example: Москва
-                password:
-                  type: string
-                  example: Секретная строка
-                  nullable: false
+              $ref: '#/components/schemas/RegisterUserRequest'
       responses:
         '200':
           description: Успешная регистрация
@@ -206,22 +174,18 @@ paths:
       security:
         - bearerAuth: [ ]
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - text
-              properties:
-                text:
-                  $ref: '#/components/schemas/PostText'
+              $ref: '#/components/schemas/PostText'
       responses:
         '200':
-          description: Успешно создан пост
+          description: Успешное создание поста
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostId'
+                $ref: '#/components/schemas/PostText'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -237,21 +201,15 @@ paths:
       security:
         - bearerAuth: [ ]
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-                - text
-              properties:
-                id:
-                  $ref: '#/components/schemas/PostId'
-                text:
-                  $ref: '#/components/schemas/PostText'
+              $ref:
+                '#/components/schemas/Post'
       responses:
-        '200':
-          description: Успешно изменен пост
+        "200":
+          description: Успешное обновление поста
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -363,15 +321,11 @@ paths:
           required: true
           in: path
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - text
-              properties:
-                text:
-                  $ref: '#/components/schemas/DialogMessageText'
+              $ref: '#/components/schemas/DialogMessageText'
       responses:
         '200':
           description: Успешно отправлено сообщение
@@ -397,7 +351,7 @@ paths:
           in: path
       responses:
         '200':
-          description: Диалог между двумя пользователями
+          description: Успешно отправлено сообщение
           content:
             application/json:
               schema:
@@ -416,8 +370,16 @@ components:
   responses:
     '400':
       description: Невалидные данные ввода
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
     '401':
       description: Неавторизованный доступ
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
     5xx:
       description: Ошибка сервера
       headers:
@@ -429,19 +391,8 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - message
-            properties:
-              message:
-                type: string
-                description: Описание ошибки
-              request_id:
-                type: string
-                description: Идентификатор запроса. Предназначен для более быстрого поиска проблем.
-              code:
-                type: integer
-                description: Код ошибки. Предназначен для классификации проблем и более быстрого решения проблем.
+            $ref: '#/components/schemas/ErrorMessage'
+
   schemas:
     BirthDate:
       type: string
@@ -476,14 +427,19 @@ components:
           type: string
           example: Москва
           description: Город
-    PostId:
-      type: string
-      description: Идентификатор поста
-      example: 1d535fd6-7521-4cb1-aa6d-031be7123c4d
-    PostText:
-      type: string
-      description: Текст поста
-      example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus mauris ultrices eros in cursus turpis massa.
+    PostRequest:
+      required:
+        - id
+        - text
+      properties:
+        id:
+          type: string
+          description: Идентификатор поста
+          example: 1d535fd6-7521-4cb1-aa6d-031be7123c4d
+        text:
+          type: string
+          description: Текст поста
+          example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus mauris ultrices eros in cursus turpis massa.
     DialogMessageText:
       type: string
       description: Текст сообщения
@@ -504,13 +460,94 @@ components:
     Post:
       type: object
       description: Пост пользователя
+      required:
+        - id
+        - text
       properties:
         id:
-          $ref: '#/components/schemas/PostId'
+          type: string
+          description: Идентификатор поста
+          example: 1d535fd6-7521-4cb1-aa6d-031be7123c4d
         text:
-          $ref: '#/components/schemas/PostText'
-        author_user_id:
+          type: string
+          example: Текст
+    PostId:
+      type: object
+      description: Пост пользователя
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Идентификатор поста
+    PostText:
+      type: object
+      description: Пост пользователя
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          example: Текст
+    RegisterUserRequest:
+      type: object
+      description: Данные для регистрации участника
+      properties:
+        user_id:
+          type: string
+          example: Логин
+          nullable: false
+        first_name:
+          type: string
+          example: Имя
+        second_name:
+          type: string
+          example: Фамилия
+        birthdate:
+          $ref: '#/components/schemas/BirthDate'
+        biography:
+          type: string
+          example: Хобби, интересы и т.п.
+        city:
+          type: string
+          example: Москва
+        password:
+          type: string
+          example: Секретная строка
+          nullable: false
+      required:
+        - user_id
+        - password
+    LoginModel:
+      type: object
+      properties:
+        id:
           $ref: '#/components/schemas/UserId'
+        password:
+          type: string
+          example: Секретная строка
+          nullable: false
+    ErrorMessage:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Описание ошибки
+        request_id:
+          type: string
+          description: Идентификатор запроса. Предназначен для более быстрого поиска проблем.
+        code:
+          type: integer
+          description: Код ошибки. Предназначен для классификации проблем и более быстрого решения проблем.
+    LoginResponse:
+      description: Успешная аутентификация
+      type: object
+      properties:
+        token:
+          type: string
+          example: e4d2e6b0-cde2-42c5-aac3-0b8316f21e58
   securitySchemes:
     bearerAuth:
       type: http

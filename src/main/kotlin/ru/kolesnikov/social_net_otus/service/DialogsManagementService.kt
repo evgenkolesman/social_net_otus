@@ -3,7 +3,6 @@ package ru.kolesnikov.social_net_otus.service
 import org.springframework.stereotype.Service
 import ru.kolesnikov.social_net_otus.configuration.CurrentLoginProvider
 import ru.kolesnikov.social_net_otus.model.DialogMessage
-import ru.kolesnikov.social_net_otus.model.DialogUserIdSendPostRequest
 import ru.kolesnikov.social_net_otus.repository.DialogsManagementRepository
 
 @Service
@@ -17,8 +16,8 @@ class DialogsManagementService(
         return dialogMessages.map { DialogMessage(it.from, it.to, it.text) }
     }
 
-    fun addDialogsByUserId(userId: String, postRequest: DialogUserIdSendPostRequest) {
+    fun addDialogsByUserId(userId: String, postRequest: String) {
         val currentLogin = currentLoginProvider.getCurrentLogin()
-        dialogsManagementRepository.addDialogMessages(currentLogin, userId, postRequest.text)
+        dialogsManagementRepository.addDialogMessages(currentLogin, userId, postRequest)
     }
 }

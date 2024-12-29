@@ -8,11 +8,7 @@ import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
 import ru.kolesnikov.social_net_otus.configuration.CurrentLoginProvider
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
-import ru.kolesnikov.social_net_otus.model.LoginPost200Response
-import ru.kolesnikov.social_net_otus.model.LoginPostRequest
-import ru.kolesnikov.social_net_otus.model.User
-import ru.kolesnikov.social_net_otus.model.UserRegisterPost200Response
-import ru.kolesnikov.social_net_otus.model.UserRegisterPostRequest
+import ru.kolesnikov.social_net_otus.model.*
 import ru.kolesnikov.social_net_otus.repository.UserRegisterRepository
 import javax.security.auth.login.LoginException
 
@@ -27,7 +23,7 @@ class RegistrationManagementService(
     private val currentLoginProvider: CurrentLoginProvider
 
     ) {
-    fun login(loginPostRequest: LoginPostRequest): LoginPost200Response {
+    fun login(loginPostRequest: LoginModel): LoginResponse {
         if (loginPostRequest.password.isNullOrBlank()
             || loginPostRequest.id.isNullOrBlank()
         ) throw LoginException("This data cannot be null or empty")
@@ -35,7 +31,7 @@ class RegistrationManagementService(
         val auth = UsernamePasswordAuthenticationToken(loginPostRequest.id, loginPostRequest.password)
         val authenticate = authenticationManager.authenticate(auth)
         val generateToken = authService.generateToken(authenticate)
-        return LoginPost200Response(generateToken)
+        return LoginResponse(generateToken)
     }
 
     fun getUserById(id: String): User {
@@ -55,8 +51,8 @@ class RegistrationManagementService(
         } else User()
     }
 
-    fun userRegister(userRegisterPostRequest: UserRegisterPostRequest): UserRegisterPost200Response? {
-        return if (userRegisterPostRequest.userId.isNullOrBlank() || userRegisterPostRequest.password.isNullOrBlank()) {
+    fun userRegister(userRegisterPostRequest: RegisterUserRequest): UserRegisterPost200Response? {
+        return if (userRegisterPostRequest.userId.isBlank() || userRegisterPostRequest.password.isBlank()) {
             throw RegistrationException("Login and password cannot be blank!!!")
         } else {
             val password = passwordEncoder.encode(userRegisterPostRequest.password)

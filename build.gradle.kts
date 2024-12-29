@@ -77,6 +77,7 @@ tasks.withType<Test> {
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-test")
+        implementation( "org.springframework.security:spring-security-test")
         implementation("org.testcontainers:junit-jupiter")
         implementation("org.jetbrains.kotlin:kotlin-test-junit5")
         implementation("org.testcontainers:postgresql")
