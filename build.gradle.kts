@@ -83,6 +83,7 @@ tasks.withType<Test> {
         implementation("org.testcontainers:postgresql")
         implementation("org.junit.platform:junit-platform-launcher")
         implementation("io.rest-assured:rest-assured")
+        implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     }
 }
 

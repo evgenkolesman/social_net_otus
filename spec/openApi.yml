@@ -441,9 +441,13 @@ components:
           description: Текст поста
           example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus mauris ultrices eros in cursus turpis massa.
     DialogMessageText:
-      type: string
-      description: Текст сообщения
-      example: Привет, как дела?
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: Текст сообщения
+          example: Привет, как дела?
     DialogMessage:
       type: object
       required:
@@ -456,7 +460,9 @@ components:
         to:
           $ref: '#/components/schemas/UserId'
         text:
-          $ref: '#/components/schemas/DialogMessageText'
+          type: string
+          description: Текст сообщения
+          example: Привет, как дела?
     Post:
       type: object
       description: Пост пользователя

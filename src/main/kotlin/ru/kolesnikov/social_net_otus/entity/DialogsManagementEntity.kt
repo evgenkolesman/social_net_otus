@@ -19,7 +19,7 @@ data class DialogsManagementEntity(
     @Column("text")
      val text: String,
     @Column("time_modified")
-    val timeModified: String = Instant.now().toString(),
+    val timeModified: Instant = Instant.now(),
 
     ) : Persistable<UUID> {
 

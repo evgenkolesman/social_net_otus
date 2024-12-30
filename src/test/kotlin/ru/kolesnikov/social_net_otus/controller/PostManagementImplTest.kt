@@ -15,6 +15,7 @@ import ru.kolesnikov.social_net_otus.testcontainers.AbstractIntegrationTestConfi
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 
 class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
@@ -81,17 +82,16 @@ class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
 
     @Test
     fun postUpdatePut() {
-        val post = containerControllerMethods
+        containerControllerMethods
             .putRequestToController(
                 "/post/update", Post(id.toString(), "new text")
             )
             .and()
             .assertThat()
             .statusCode(200)
-            .extract()
-            .`as`(Post::class.java)
-
-        assertEquals(post, Post("login", "text"))
+        val findById = postManagementRepository.findById(id)
+        assertTrue { findById.isPresent }
+        assertEquals(Post(findById.get().id.toString(), findById.get().text), Post(id.toString(), "new text"))
 
     }
 

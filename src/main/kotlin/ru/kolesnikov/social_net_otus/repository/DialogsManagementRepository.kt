@@ -17,9 +17,9 @@ interface DialogsManagementRepository : CrudRepository<DialogsManagementEntity, 
 
     @Query("""
         INSERT INTO sno_dialogs("from", "to", "text")
-         values (:userId, :currentLogin, :text)
+         values (:userId, :currentLogin, :text) RETURNING id
     """)
-    fun addDialogMessages(currentLogin: String, userId: String, text: String): Any
+    fun addDialogMessages(currentLogin: String, userId: String, text: String): UUID
 
 
 }
