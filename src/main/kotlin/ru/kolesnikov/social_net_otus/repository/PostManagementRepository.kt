@@ -31,10 +31,10 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        SELECT * FROM sno_posts limit :limit offset :offset  
+        SELECT id, text_post as "text" FROM sno_posts limit :limit offset :offset  
     """
     )
-    fun getWithLiniNadOffset(offset: BigDecimal, limit: BigDecimal): List<Post>
+    fun getWithLimitAndOffset(offset: BigDecimal, limit: BigDecimal): List<Post>
 
 
 

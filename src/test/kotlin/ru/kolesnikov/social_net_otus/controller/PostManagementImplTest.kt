@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.security.test.context.support.WithMockUser
+import ru.kolesnikov.social_net_otus.model.Post
 import ru.kolesnikov.social_net_otus.model.PostText
 import ru.kolesnikov.social_net_otus.repository.PostManagementRepository
 import ru.kolesnikov.social_net_otus.testcontainers.AbstractIntegrationTestConfigurator
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 
 class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
@@ -54,7 +56,7 @@ class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
         val body = PostText("TEST TEXT")
         val value = containerControllerMethods
             .postRequestToController(
-                "/post/create", token, body
+                "/post/create", body
             )
             .and()
             .assertThat()
@@ -66,17 +68,60 @@ class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
 
     @Test
     fun postDeleteIdPut() {
+        containerControllerMethods
+            .putRequestToController(
+                "/post/delete/${id}", ""
+            )
+            .and()
+            .assertThat()
+            .statusCode(200)
+
+        assertFalse { postManagementRepository.findById(id).get().active }
     }
 
     @Test
     fun postUpdatePut() {
+        val post = containerControllerMethods
+            .putRequestToController(
+                "/post/update", Post(id.toString(), "new text")
+            )
+            .and()
+            .assertThat()
+            .statusCode(200)
+            .extract()
+            .`as`(Post::class.java)
+
+        assertEquals(post, Post("login", "text"))
+
     }
 
     @Test
     fun postFeedGet() {
+        val post = containerControllerMethods
+            .getRequestToController(
+                "/post/feed"
+            )
+            .and()
+            .assertThat()
+            .statusCode(200)
+            .extract()
+            .response().jsonPath().getList("", Post::class.java)
+
+        assertEquals(post, listOf(Post(id.toString(), "text")))
     }
 
     @Test
     fun postGetIdGet() {
+        val post = containerControllerMethods
+            .getRequestToController(
+                "/post/get/${id}"
+            )
+            .and()
+            .assertThat()
+            .statusCode(200)
+            .extract()
+            .`as`(Post::class.java)
+
+        assertEquals(post, Post(id.toString(), "text"))
     }
 }

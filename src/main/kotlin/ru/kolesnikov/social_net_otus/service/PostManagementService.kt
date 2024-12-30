@@ -29,8 +29,8 @@ class PostManagementService(private val currentLoginProvider: CurrentLoginProvid
         postManagementRepository.updatePost(UUID.fromString(postUpdatePutRequest.id), postUpdatePutRequest.text)
     }
 
-    fun postFeedGet(offset: BigDecimal, limit: BigDecimal): List<Post>
-    = postManagementRepository.getWithLiniNadOffset(offset, limit)
+    fun postFeedGet(offset: BigDecimal, limit: BigDecimal):
+            List<Post> = postManagementRepository.getWithLimitAndOffset(offset, limit)
 
     fun postGetById(id: String): Post {
         val post = postManagementRepository.findById(UUID.fromString(id))

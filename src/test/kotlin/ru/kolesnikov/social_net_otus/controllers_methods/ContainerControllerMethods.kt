@@ -40,11 +40,10 @@ class ContainerControllerMethods(private val objectMapper: ObjectMapper) {
     }
 
     @Throws(JsonProcessingException::class)
-    fun <T> postRequestToController(path: String, token: String, body: T): ValidatableResponse {
+    fun <T> postRequestToController(path: String, body: T): ValidatableResponse {
         val newBody = objectMapper.writeValueAsString(body)
         return ThreadLocal.withInitial {
             given().contentType(MediaType.APPLICATION_JSON_VALUE)
-                .auth().oauth2(token)
                 .log().all()
                 .body(newBody)
                 .`when`()
