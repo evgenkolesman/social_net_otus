@@ -12,13 +12,15 @@ import java.util.*
 @Service
 class PostManagementService(private val currentLoginProvider: CurrentLoginProvider,
     private val postManagementRepository: PostManagementRepository) {
-    fun postCreate(postText: PostText): PostText {
+    fun postCreate(postText: PostText): Post {
         val currentLogin = currentLoginProvider.getCurrentLogin()
-        postManagementRepository.save(PostManagementEntity(
-            login = currentLogin,
-            text = postText.text
-        ))
-        return PostText(postText.text)
+        val save = postManagementRepository.save(
+            PostManagementEntity(
+                login = currentLogin,
+                text = postText.text
+            )
+        )
+        return Post(save.id.toString(), save.text)
     }
 
     fun postDeleteId(id: String) {

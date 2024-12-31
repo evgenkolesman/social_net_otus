@@ -9,7 +9,7 @@ import java.math.BigDecimal
 @RestController
 class PostManagementImpl(private val service: PostManagementService) : PostManagementApi {
     override fun postCreatePost(postRequest : PostText)
-            : ResponseEntity<PostText> = ResponseEntity.ok(service.postCreate(postRequest))
+            : ResponseEntity<Post> = ResponseEntity.ok(service.postCreate(postRequest))
 
     override fun postDeleteIdPut(postId: PostId): ResponseEntity<Unit> = ResponseEntity.ok(service.postDeleteId(postId.id))
 

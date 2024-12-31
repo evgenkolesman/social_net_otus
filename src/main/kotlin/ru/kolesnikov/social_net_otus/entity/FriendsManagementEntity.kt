@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table
 data class FriendsManagementEntity(
     @Id
     @Column("id")
-    val id: Long,
+    val id: Long? = null,
     @Column("first_login")
     val firstLogin: String,
     @Column("second_login")

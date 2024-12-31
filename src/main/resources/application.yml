@@ -9,6 +9,13 @@ spring:
     url:
     username:
     password:
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    url: "/openapi.yml"
+
 db:
   schema:
 

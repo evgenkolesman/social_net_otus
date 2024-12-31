@@ -1,4 +1,7 @@
 
+*** Social net for otus practice
+
+
 Generate private key
 openssl genpkey -algorithm RSA -out private-key.pem
 Generate public key

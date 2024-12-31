@@ -63,8 +63,8 @@ class PostManagementImplTest : AbstractIntegrationTestConfigurator() {
             .assertThat()
             .statusCode(200)
             .extract()
-            .`as`(PostText::class.java)
-        assertEquals(value, body)
+            .`as`(Post::class.java)
+        assertEquals(value.text, body.text)
     }
 
     @Test

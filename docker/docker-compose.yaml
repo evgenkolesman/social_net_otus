@@ -2,7 +2,7 @@ version: "3.9"
 services:
   social_net_otus_db:
     image: postgres:14.9
-    container_name: social_net_otus
+    container_name: social_net_otus_db
     ports:
       - "5888:5432"
     environment:
@@ -24,6 +24,32 @@ services:
           memory: 1G
     volumes:
       - social_net_otus:/var/lib/postgresql/data
+
+  social_net_otus:
+    build:
+      context: ..
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - social_net_otus_db
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+    environment:
+      db.schema: social_net_otus
+#    healthcheck:
+#      test: [ "CMD", "wget http://localhost:8080/xhr/actuator/health | grep UP" ]
+#      interval: 20s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    volumes:
+      - "./application-docker.yml:/opt/social_net_otus/application.yml"
 
 volumes:
   social_net_otus:

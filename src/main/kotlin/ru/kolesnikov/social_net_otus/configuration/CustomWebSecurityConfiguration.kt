@@ -51,10 +51,13 @@ class CustomWebSecurityConfiguration(
         http
             .authorizeHttpRequests { authorizeHttpRequests ->
                 authorizeHttpRequests
-//                    .requestMatchers("/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/logout").permitAll()
+                    .requestMatchers( "/logout").permitAll()
+                    .requestMatchers("/actuator/**").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/openapi.yml").permitAll()
                     .anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt { jwt -> jwt.decoder(jwtDecoder()) } }

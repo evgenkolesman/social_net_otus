@@ -97,7 +97,7 @@ val generatedSourcesDir = "$rootDir/build/generated"
 openApiGenerate {
     generatorName.set("kotlin-spring")
     apiNameSuffix.set("Interface")
-    inputSpec.set("$rootDir/spec/openApi.yml")
+    inputSpec.set("$rootDir/src/main/resources/static/openapi.yml")
     outputDir.set(generatedSourcesDir)
     apiPackage.set("ru.kolesnikov.social_net_otus.controller")
     modelPackage.set("ru.kolesnikov.social_net_otus.model")
