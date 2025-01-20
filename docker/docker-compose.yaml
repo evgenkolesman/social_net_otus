@@ -28,7 +28,7 @@ services:
       - otus_highload
 
   social_net_otus:
-    container_name: social_net_otus
+    container_name: socialnetotus
     build:
       context: ..
     restart: always
