@@ -6,9 +6,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
-import ru.kolesnikov.social_net_otus.configuration.CurrentLoginProvider
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
-import ru.kolesnikov.social_net_otus.model.*
+import ru.kolesnikov.social_net_otus.model.LoginModel
+import ru.kolesnikov.social_net_otus.model.LoginResponse
+import ru.kolesnikov.social_net_otus.model.RegisterUserRequest
+import ru.kolesnikov.social_net_otus.model.User
+import ru.kolesnikov.social_net_otus.model.UserRegisterPost200Response
 import ru.kolesnikov.social_net_otus.repository.UserRegisterRepository
 import javax.security.auth.login.LoginException
 
@@ -20,7 +23,6 @@ class RegistrationManagementService(
     private val authService: AuthService,
     private val authenticationManager: AuthenticationManager,
     private val passwordEncoder: PasswordEncoder,
-    private val currentLoginProvider: CurrentLoginProvider
 
     ) {
     fun login(loginPostRequest: LoginModel): LoginResponse {
@@ -35,8 +37,6 @@ class RegistrationManagementService(
     }
 
     fun getUserById(id: String): User {
-        println(currentLoginProvider.getCurrentLogin())
-
         val entityOpt = userRegisterRepository.findByUsername(id)
         return if (entityOpt.isPresent) {
             val user = entityOpt.get()
@@ -81,14 +81,16 @@ class RegistrationManagementService(
 
     fun userSearchGet(firstName: String, lastName: String): List<User> {
         return userRegisterRepository.findByFirstNameAndLastName(firstName, lastName)
-            .map { User(
-                it.username,
-                it.firstName,
-                it.secondName,
-                it.birthdate,
-                it.biography,
-                it.city)
-             }
+            .map {
+                User(
+                    it.username,
+                    it.firstName,
+                    it.secondName,
+                    it.birthdate,
+                    it.biography,
+                    it.city
+                )
+            }
     }
 
 }
