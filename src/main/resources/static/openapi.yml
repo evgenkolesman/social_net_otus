@@ -97,7 +97,7 @@ paths:
         - name: first_name
           schema:
             type: string
-            description: Часть имени для поиска
+            description: Имя для поиска
             example: Конст
           in: query
           required: true
@@ -105,11 +105,18 @@ paths:
         - name: last_name
           schema:
             type: string
-            description: Часть фамилии для поиска
+            description: Фамилия для поиска
             example: Оси
           in: query
           required: true
           description: Условие поиска по фамилии
+        - name: like
+          schema:
+            type: boolean
+            description: если есть флаг и он true ищем по части (не обязателен)
+            example: false
+          required: false
+          in: query
       responses:
         '200':
           description: Успешные поиск пользователя

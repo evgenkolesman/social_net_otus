@@ -93,6 +93,22 @@ class RegistrationManagementService(
             }
     }
 
+    fun userSearchGetWithLike(firstName: String, lastName: String): List<User> {
+        return userRegisterRepository.findByFirstNameAndLastNameWithLike(firstName, lastName)
+            .map {
+                User(
+                    it.username,
+                    it.firstName,
+                    it.secondName,
+                    it.birthdate,
+                    it.biography,
+                    it.city
+                )
+            }
+    }
+
+
+
 }
 
 class RegistrationException(message: String) : RuntimeException(message)

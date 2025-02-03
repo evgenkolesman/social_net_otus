@@ -10,19 +10,24 @@ class RegistrationManagementImpl(
     private val service: RegistrationManagementService,
 ) : UserManagementAndRegistrationApi {
 
-    override fun loginPost(loginPostRequest: LoginModel): ResponseEntity<LoginResponse> {
-        return ResponseEntity.ok(service.login(loginPostRequest))
+    override fun loginPost(loginModel: LoginModel): ResponseEntity<LoginResponse> {
+        return ResponseEntity.ok(service.login(loginModel))
     }
 
     override fun userGetIdGet(id: String): ResponseEntity<User> = ResponseEntity.ok(service.getUserById(id))
 
 
-    override fun userRegisterPost(userRegisterPostRequest: RegisterUserRequest): ResponseEntity<UserRegisterPost200Response> {
-       return ResponseEntity.ok(service.userRegister(userRegisterPostRequest))
+    override fun userRegisterPost(registerUserRequest: RegisterUserRequest): ResponseEntity<UserRegisterPost200Response> {
+       return ResponseEntity.ok(service.userRegister(registerUserRequest))
     }
 
-    override fun userSearchGet(firstName: String, lastName: String): ResponseEntity<List<User>> {
-        return ResponseEntity.ok(service.userSearchGet(firstName, lastName))
-    }
+    override fun userSearchGet(firstName: String, lastName: String, like: Boolean?): ResponseEntity<List<User>> =
+         when (like) {
+            null, false -> {
+                ResponseEntity.ok(service.userSearchGet(firstName, lastName))
+            }
+            else -> ResponseEntity.ok(service.userSearchGetWithLike(firstName, lastName))
+        }
+
 
 }
