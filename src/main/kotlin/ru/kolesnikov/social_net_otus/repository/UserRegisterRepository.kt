@@ -22,7 +22,7 @@ interface UserRegisterRepository : CrudRepository<UserRegisterEntity, UUID?> {
 
     @Query(
         """
-        SELECT * FROM sno_user_register where first_name like '%' | :firstName | '%' AND '%' |  second_name like :secondName | '%'
+        SELECT * FROM sno_user_register where first_name like :firstName || '%' AND  second_name like :secondName || '%'
     """
     )
     fun findByFirstNameAndLastNameWithLike(firstName: String, secondName: String): List<UserRegisterEntity>
