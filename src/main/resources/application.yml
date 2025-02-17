@@ -9,12 +9,13 @@ spring:
     url:
     username:
     password:
-
 springdoc:
   api-docs:
     path: "/api-docs"
   swagger-ui:
     url: "/openapi.yml"
+  show-actuator: true
+
 
 db:
   schema:
@@ -22,3 +23,15 @@ db:
 rsa:
   private-key: classpath:private-key.pem
   public-key: classpath:public-key.pem
+management:
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      access: read_only
+#      exposure:
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"

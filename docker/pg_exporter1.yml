@@ -1,0 +1,3 @@
+data_sources:
+  - name: replica1
+    connection_string: "postgresql://user:Password1@sno_db_slave1:5432/social_net_otus?sslmode=disable"

@@ -1,0 +1,115 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "spring-boot-crud",
+    "title": "Spring Boot CRUD Metrics",
+    "description": "Monitor CRUD operations, latency, and system performance",
+    "tags": ["Spring Boot", "CRUD", "Monitoring"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Total Requests",
+        "type": "stat",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(increase(http_server_requests_seconds_count[5m]))",
+            "legendFormat": "Requests",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "title": "Average Request Latency",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_sum[5m]) / rate(http_server_requests_seconds_sum[5m])",
+            "legendFormat": "Latency (s)",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "s",
+            "label": "Seconds"
+          }
+        ]
+      },
+      {
+        "title": "CRUD Operations Breakdown",
+        "type": "piechart",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(increase(http_server_requests_seconds_count{uri=~\".*(create|read|update|delete).*\"}[5m])) by (uri)",
+            "legendFormat": "{{uri}}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "title": "Error Rate",
+        "type": "stat",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(increase(http_server_requests_seconds_count{status=~'5..'}[5m])) / sum(increase(http_server_requests_seconds_count[5m])) * 100",
+            "legendFormat": "Error %",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "title": "CPU Usage",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "title": "Memory Usage",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "Memory Used %",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent"
+          }
+        ]
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 26,
+    "version": 1,
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h"]
+    }
+  }
+}

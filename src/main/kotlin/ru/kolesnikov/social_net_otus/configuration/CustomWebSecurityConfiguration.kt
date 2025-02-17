@@ -55,6 +55,7 @@ class CustomWebSecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/login").permitAll()
                     .requestMatchers( "/logout").permitAll()
                     .requestMatchers("/actuator/**").permitAll()
+                    .requestMatchers("/metrics").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/api-docs/**").permitAll()
                     .requestMatchers("/openapi.yml").permitAll()

@@ -1,0 +1,3 @@
+data_sources:
+  - name: master
+    connection_string: "postgresql://postgres:Password1@social_net_otus_db:5432/social_net_otus?sslmode=disable"

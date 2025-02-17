@@ -49,6 +49,7 @@ dependencies {
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:js-cookie:2.1.0")
     implementation("org.postgresql:postgresql")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 
 
 

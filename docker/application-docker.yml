@@ -18,3 +18,18 @@ springdoc:
     path: "/api-docs"
   swagger-ui:
     url: "/openapi.yml"
+
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    enable:
+      jvm: true
+      jdbc: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

@@ -1,0 +1,101 @@
+{
+  "panels": [
+    {
+      "title": "HTTP Requests Total",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count[1m])) by (status)",
+          "legendFormat": "{{status}}",
+          "interval": "",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "HTTP Request Latency (ms)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[5m])) by (le))",
+          "legendFormat": "95th percentile latency",
+          "refId": "B"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "JVM Memory Usage",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "jvm_memory_bytes_used{area='heap'} / jvm_memory_bytes_max{area='heap'} * 100",
+          "legendFormat": "JVM Heap Memory Usage (%)",
+          "refId": "C"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "JVM Garbage Collection Time",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(jvm_gc_seconds_total[1m])) by (gc)",
+          "legendFormat": "GC Time (seconds)",
+          "refId": "D"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "Active Threads",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "jvm_threads_current",
+          "legendFormat": "Active Threads",
+          "refId": "E"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "Database Connections",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "spring_boot_datasource_connections_active",
+          "legendFormat": "Active DB Connections",
+          "refId": "F"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "Errors Total",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(spring_boot_errors_total[1m]))",
+          "legendFormat": "Total Errors",
+          "refId": "G"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "title": "Spring Boot Actuator Metrics (Requests with Errors)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(spring_boot_requests_total{status=~'5..'}[1m]))",
+          "legendFormat": "5xx Errors",
+          "refId": "H"
+        }
+      ],
+      "datasource": "Prometheus"
+    }
+  ]
+}

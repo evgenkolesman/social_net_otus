@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'spring-boot-application'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 15s # This can be adjusted based on our needs
+    static_configs:
+    - targets: [ 'localhost:9081' ]
+#    - targets: [ 'socialnetotus:8080' ]
+#    - targets: [ 'host.docker.internal:8080' ]
+#  - job_name: "prometheus"
+#    static_configs:
+#      - targets: ["prometheus:9090"]
+#  - job_name: 'node_exporter'
+#    static_configs:
+#      - targets: ['node_exporter:9100']
+  - job_name: "postgres_exporter"
+    static_configs:
+#      - targets: [ "postgres_exporter:9187" ]
+      - targets: [ "localhost:9187" ]
+        labels:
+          db: 'social_net_otus_db'
+
+  - job_name: "postgres_exporter_slave1"
+    static_configs:
+#      - targets: [ "postgres_exporter:9187" ]
+      - targets: [ "localhost:9187" ]
+        labels:
+          db: 'sno_db_slave1'
+
+  - job_name: "postgres_exporter_slave2"
+    static_configs:
+#      - targets: [ "postgres_exporter:9187" ]
+      - targets: [ "localhost:9187" ]
+        labels:
+          db: 'sno_db_slave2'
