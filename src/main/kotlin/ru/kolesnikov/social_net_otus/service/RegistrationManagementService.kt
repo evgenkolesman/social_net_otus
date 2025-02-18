@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
 import ru.kolesnikov.social_net_otus.model.LoginModel
 import ru.kolesnikov.social_net_otus.model.LoginResponse
@@ -25,6 +26,8 @@ class RegistrationManagementService(
     private val passwordEncoder: PasswordEncoder,
 
     ) {
+
+    @Transactional(readOnly = true)
     fun login(loginPostRequest: LoginModel): LoginResponse {
         if (loginPostRequest.password.isNullOrBlank()
             || loginPostRequest.id.isNullOrBlank()
@@ -36,6 +39,7 @@ class RegistrationManagementService(
         return LoginResponse(generateToken)
     }
 
+    @Transactional(readOnly = true)
     fun getUserById(id: String): User {
         val entityOpt = userRegisterRepository.findByUsername(id)
         return if (entityOpt.isPresent) {
@@ -51,6 +55,7 @@ class RegistrationManagementService(
         } else User()
     }
 
+    @Transactional(readOnly = false)
     fun userRegister(userRegisterPostRequest: RegisterUserRequest): UserRegisterPost200Response? {
         return if (userRegisterPostRequest.userId.isBlank() || userRegisterPostRequest.password.isBlank()) {
             throw RegistrationException("Login and password cannot be blank!!!")
@@ -79,6 +84,7 @@ class RegistrationManagementService(
         }
     }
 
+    @Transactional(readOnly = true)
     fun userSearchGet(firstName: String, lastName: String): List<User> {
         return userRegisterRepository.findByFirstNameAndLastName(firstName, lastName)
             .map {
@@ -93,6 +99,7 @@ class RegistrationManagementService(
             }
     }
 
+    @Transactional(readOnly = true)
     fun userSearchGetWithLike(firstName: String, lastName: String): List<User> {
         return userRegisterRepository.findByFirstNameAndLastNameWithLike(firstName, lastName)
             .map {
