@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
@@ -14,6 +15,8 @@ import java.util.stream.Collectors
 class AuthService(
     val jwtEncoder: JwtEncoder,
 ) {
+
+    @Transactional(readOnly = true)
     fun generateToken(authentication: Authentication): String? {
         val now: Instant = Instant.now()
         val scope: String = authentication.getAuthorities()
