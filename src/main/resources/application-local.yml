@@ -13,7 +13,7 @@ spring:
       -  url: jdbc:postgresql://localhost:5889/social_net_otus?currentSchema=${db.schema}
          username: "postgres"
          password: "Password1"
-      -  url: jdbc:postgresql://localhost:5889/social_net_otus?currentSchema=${db.schema}
+      -  url: jdbc:postgresql://localhost:5890/social_net_otus?currentSchema=${db.schema}
          username: "postgres"
          password: "Password1"
 db:

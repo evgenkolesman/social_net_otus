@@ -13,9 +13,14 @@ object TestContainersInitializer {
     class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
         override fun initialize(applicationContext: ConfigurableApplicationContext) {
             TestPropertyValues.of(
-                "spring.datasource.url=" + container.jdbcUrl + "&currentSchema=\${db.schema}",
-                "spring.datasource.username=" + container.username,
-                "spring.datasource.password=" + container.password,
+                "spring.datasource.replicas.url=" + container.jdbcUrl + "&currentSchema=\${db.schema}",
+                "spring.datasource.replicas.username=" + container.username,
+                "spring.datasource.replicas.password=" + container.password,
+
+                "spring.datasource.master.url=" + container.jdbcUrl + "&currentSchema=\${db.schema}",
+                "spring.datasource.master.username=" + container.username,
+                "spring.datasource.master.password=" + container.password,
+
                 "spring.datasource.hikari.maximum-pool-size=5"
             ).applyTo(applicationContext)
         }

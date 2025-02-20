@@ -18,7 +18,7 @@ class DialogsManagementService(
         return dialogMessages.map { DialogMessage(it.from, it.to, it.text) }
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     fun addDialogsByUserId(userId: String, postRequest: String) {
         val currentLogin = currentLoginProvider.getCurrentLogin()
         dialogsManagementRepository.addDialogMessages(currentLogin, userId, postRequest)

@@ -14,7 +14,7 @@ import java.util.*
 class PostManagementService(private val currentLoginProvider: CurrentLoginProvider,
     private val postManagementRepository: PostManagementRepository) {
 
-    @Transactional(readOnly = false)
+    @Transactional
     fun postCreate(postText: PostText): Post {
         val currentLogin = currentLoginProvider.getCurrentLogin()
         val save = postManagementRepository.save(
@@ -26,12 +26,12 @@ class PostManagementService(private val currentLoginProvider: CurrentLoginProvid
         return Post(save.id.toString(), save.text)
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     fun postDeleteId(id: String) {
         postManagementRepository.softDelete(UUID.fromString(id))
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     fun postUpdate(postUpdatePutRequest: Post) {
         postManagementRepository.updatePost(UUID.fromString(postUpdatePutRequest.id), postUpdatePutRequest.text)
     }

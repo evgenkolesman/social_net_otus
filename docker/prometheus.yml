@@ -26,6 +26,8 @@ scrape_configs:
     metrics_path: /actuator/prometheus
     static_configs:
       - targets: ['socialnetotus:8080' ]
+      - targets: ['host.docker.internal:8080' ]
+      - targets: ['localhost:8080' ]
 
   - job_name: "postgres_master"
     static_configs:

@@ -10,14 +10,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource
 import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.concurrent.atomic.AtomicInteger
 import javax.sql.DataSource
 
 
-private const val MASTER = "MASTER"
+const val MASTER = "MASTER"
 
-private const val REPLICA = "REPLICA"
+const val REPLICA = "REPLICA"
 
 @Configuration
 class CommonConfiguration(private val replicaProperties: ReplicaDataSourcesProperties) {
@@ -89,7 +88,7 @@ class ReplicaConfig(
 
 class ReplicationRoutingDataSource(
     private val replicas: Map<String, List<DataSource>>,
-    private val counter: AtomicInteger = AtomicInteger(),
+    private val counter: AtomicInteger = AtomicInteger()
 ) : AbstractRoutingDataSource() {
     override fun afterPropertiesSet() {
         super.setDefaultTargetDataSource(replicas[MASTER]!![0])
@@ -107,7 +106,7 @@ class ReplicationRoutingDataSource(
 
     override fun determineCurrentLookupKey(): String {
         //        TODO need recheck
-        return if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+        return if (currentDataSourceKey == REPLICA) {
             val replicaDataSources = replicas[REPLICA]
             val index = counter.getAndIncrement() % replicaDataSources?.size!!
             "$REPLICA-$index"
@@ -117,4 +116,12 @@ class ReplicationRoutingDataSource(
 
     }
 
+
+    fun setCurrentDataSource(key: String) {
+        currentDataSourceKey = key
+    }
+
+    private var currentDataSourceKey = MASTER
 }
+
+

@@ -14,11 +14,11 @@ spring:
         connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
     replicas:
       - url:
-        username: "postgres"
+        username:
         password: 
       - url:
-        username: "postgres"
-        password: 
+        username:
+        password:
 
 
 springdoc:
@@ -43,7 +43,17 @@ management:
       access: read_only
 #      exposure:
 
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    enable:
+      jvm: true
+      jdbc: true
+      web: true
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,prometheus

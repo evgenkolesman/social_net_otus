@@ -55,7 +55,7 @@ class RegistrationManagementService(
         } else User()
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     fun userRegister(userRegisterPostRequest: RegisterUserRequest): UserRegisterPost200Response? {
         return if (userRegisterPostRequest.userId.isBlank() || userRegisterPostRequest.password.isBlank()) {
             throw RegistrationException("Login and password cannot be blank!!!")

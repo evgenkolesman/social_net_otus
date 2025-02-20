@@ -106,12 +106,12 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       db.schema: social_net_otus
-    #    healthcheck:
-    #      test: [ "CMD", "wget http://localhost:9081/actuator/health | grep UP" ]
-    #      interval: 20s
-    #      timeout: 5s
-    #      retries: 5
-    #      start_period: 40s
+    healthcheck:
+      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
     deploy:
       resources:
         limits:
