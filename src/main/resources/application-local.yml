@@ -3,19 +3,26 @@ spring:
     name: social_net_otus
 
   datasource:
-    master:
-      username: "postgres"
-      url: jdbc:postgresql://localhost:5888/social_net_otus?currentSchema=${db.schema}
-      password: "Password1"
-      hikari:
-        connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
-    replicas:
-      -  url: jdbc:postgresql://localhost:5889/social_net_otus?currentSchema=${db.schema}
-         username: "postgres"
-         password: "Password1"
-      -  url: jdbc:postgresql://localhost:5890/social_net_otus?currentSchema=${db.schema}
-         username: "postgres"
-         password: "Password1"
+#    url: jdbc:postgresql://localhost:5432/social_net_otus?currentSchema=${db.schema}
+    url: jdbc:postgresql://localhost:5445/social_net_otus?currentSchema=${db.schema}
+    username: "postgres"
+    password: "Password1"
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+#    master:
+#      username: "postgres"
+#      url: jdbc:postgresql://localhost:5888/social_net_otus?currentSchema=${db.schema}
+#      password: "Password1"
+#      hikari:
+#        connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+#    replicas:
+#      -  url: jdbc:postgresql://localhost:5889/social_net_otus?currentSchema=${db.schema}
+#         username: "postgres"
+#         password: "Password1"
+#      -  url: jdbc:postgresql://localhost:5890/social_net_otus?currentSchema=${db.schema}
+#         username: "postgres"
+#         password: "Password1"
 db:
   schema: social_net_otus
 #
