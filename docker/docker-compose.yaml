@@ -36,19 +36,19 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       db.schema: social_net_otus
-    healthcheck:
-      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
-      interval: 20s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
+#    healthcheck:
+#      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
+#      interval: 20s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 40s
     deploy:
       resources:
         limits:
           cpus: '2'
           memory: 4G
     volumes:
-      - "./application-docker.yml:/opt/social_net_otus/application.yml"
+      - "./application-docker.yml:/opt/socialnetotus/application.yml"
     networks:
       - otus_highload
 
@@ -176,7 +176,7 @@ services:
       - ./patroni.yml:/patroni.yml:ro
       - ./entrypoint.sh:/entrypoint.sh:ro
       - tmp-pgpass:/tmp
-      - ./backup.sql:/dump.sql
+#      - ./backup.sql:/dump.sql
 
     environment:
       PATRONI_API_CONNECT_PORT: 8008

@@ -1,5 +1,6 @@
 package ru.kolesnikov.social_net_otus.service
 
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -28,6 +29,7 @@ class RegistrationManagementService(
     ) {
 
     @Transactional(readOnly = true)
+    @Cacheable("registration_managements")
     fun login(loginPostRequest: LoginModel): LoginResponse {
         if (loginPostRequest.password.isNullOrBlank()
             || loginPostRequest.id.isNullOrBlank()
@@ -40,6 +42,7 @@ class RegistrationManagementService(
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("registration_managements")
     fun getUserById(id: String): User {
         val entityOpt = userRegisterRepository.findByUsername(id)
         return if (entityOpt.isPresent) {
@@ -85,6 +88,7 @@ class RegistrationManagementService(
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("registration_managements")
     fun userSearchGet(firstName: String, lastName: String): List<User> {
         return userRegisterRepository.findByFirstNameAndLastName(firstName, lastName)
             .map {
@@ -100,6 +104,7 @@ class RegistrationManagementService(
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("registration_managements")
     fun userSearchGetWithLike(firstName: String, lastName: String): List<User> {
         return userRegisterRepository.findByFirstNameAndLastNameWithLike(firstName, lastName)
             .map {

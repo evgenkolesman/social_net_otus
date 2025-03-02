@@ -1,6 +1,6 @@
 spring:
   application:
-    name: social_net_otus
+    name: socialnetotus
   datasource:
     url: jdbc:postgresql://haproxy:5432/social_net_otus?currentSchema=${db.schema}
     username: "appuser"

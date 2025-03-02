@@ -51,7 +51,7 @@ x-patroni-base: &patroni-base
     retries: 3
 
 services:
-  social_net_otus:
+  socialnetotus:
     container_name: socialnetotus
     build:
       context: ../..

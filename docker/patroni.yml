@@ -27,10 +27,10 @@ bootstrap:
     - data-checksums
     - locale: en_US.UTF-8
 
-  pg_restore:
-    - dbname: postgres
-    - options: "--no-acl --no-owner"
-    - source: "dump.sql"
+#  pg_restore:
+#    - dbname: postgres
+#    - options: "--no-acl --no-owner"
+#    - source: "dump.sql"
 
   pg_hba:
     - host replication all all md5

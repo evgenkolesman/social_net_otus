@@ -1,5 +1,6 @@
 package ru.kolesnikov.social_net_otus.service
 
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.kolesnikov.social_net_otus.configuration.CurrentLoginProvider
@@ -37,10 +38,12 @@ class PostManagementService(private val currentLoginProvider: CurrentLoginProvid
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("post_managements")
     fun postFeedGet(offset: BigDecimal, limit: BigDecimal):
             List<Post> = postManagementRepository.getWithLimitAndOffset(offset, limit)
 
     @Transactional(readOnly = true)
+    @Cacheable("post_managements")
     fun postGetById(id: String): Post {
         val post = postManagementRepository.findById(UUID.fromString(id))
         return if (post.isEmpty) Post("", "")

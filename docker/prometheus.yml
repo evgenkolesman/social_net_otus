@@ -10,7 +10,7 @@ scrape_configs:
   - job_name: 'socialnetapp'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['social_net_otus:8080']
+      - targets: ['socialnetotus:8080']
 
   - job_name: 'patroni'
     static_configs:
