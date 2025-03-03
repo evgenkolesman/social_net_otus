@@ -132,3 +132,30 @@ openApiGenerate {
 sourceSets.named("main") {
     kotlin.srcDir(generatedSourcesDir)
 }
+
+//
+//tasks.register("runScript") {
+//    group = "application"
+//    description = "Запускает Kotlin Script через JVM"
+//
+//    doLast {
+//        runBlocking {
+//            launch {
+//                val scriptFile = File("${projectDir}/scripts/posts_insert/posts_insert.kts")
+//
+//                if (!scriptFile.exists()) {
+//                    throw RuntimeException("❌ Ошибка: Файл скрипта не найден! (${scriptFile.absolutePath})")
+//                }
+//
+//                val engine = ScriptEngineManager().getEngineByExtension("kts")
+//                if (engine == null) {
+//                    throw RuntimeException("❌ Ошибка: Kotlin Script Engine не найден! Проверь зависимости.")
+//                }
+//
+//                println("🚀 Запускаем скрипт: ${scriptFile.absolutePath}")
+//                engine.eval(scriptFile.readText()) // Выполняем Kotlin Script в JVM
+//                println("✅ Скрипт успешно выполнен!")
+//            }
+//        }
+//    }
+//}
