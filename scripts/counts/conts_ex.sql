@@ -23,7 +23,7 @@ SELECT (SELECT n_live_tup
         WHERE relname = 'sno_posts') = (SELECT count(*) FROM social_net_otus.sno_posts);
 
 EXPLAIN ANALYSE
-SELECT count(1) FROM social_net_otus.sno_posts;
+SELECT count(1) FROM social_net_otus.sno_user_register;
 
 EXPLAIN ANALYSE
 SELECT count(id) FROM social_net_otus.sno_posts;
