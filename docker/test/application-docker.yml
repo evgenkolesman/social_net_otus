@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: socialnetotus
+  datasource:
+    url: jdbc:postgresql://haproxy:5432/social_net_otus?currentSchema=${db.schema}
+    username: "appuser"
+    password: "apppass"
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+
+rsa:
+  private-key: classpath:private-key.pem
+  public-key: classpath:public-key.pem
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    url: "/openapi.yml"
+
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    enable:
+      jvm: true
+      jdbc: true
+      web: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

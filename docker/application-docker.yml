@@ -1,13 +1,30 @@
 spring:
   application:
-    name: social_net_otus
-
+    name: socialnetotus
   datasource:
-    url: jdbc:postgresql://social_net_otus_db:5432/social_net_otus?currentSchema=${db.schema}
+    url: jdbc:postgresql://haproxy:5432/social_net_otus?currentSchema=${db.schema}
     username: "postgres"
     password: "Password1"
+    driver-class-name: org.postgresql.Driver
     hikari:
-      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema};
+
+#    master:
+#      url: jdbc:postgresql://social_net_otus_db:5432/social_net_otus?currentSchema=${db.schema}
+#      username: "postgres"
+#      password: "Password1"
+#      driver-class-name: org.postgresql.Driver
+#      hikari:
+#        connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+#    replicas:
+#      - url: jdbc:postgresql://sno_db_slave1:5432/social_net_otus?currentSchema=${db.schema}
+#        username: "postgres"
+#        password: "Password1"
+#        driver-class-name: org.postgresql.Driver
+#      - url: jdbc:postgresql://sno_db_slave2:5432/social_net_otus?currentSchema=${db.schema}
+#        username: "postgres"
+#        password: "Password1"
+#        driver-class-name: org.postgresql.Driver
 
 rsa:
   private-key: classpath:private-key.pem
@@ -29,7 +46,15 @@ management:
     enable:
       jvm: true
       jdbc: true
+      hikaricp: true
+      web: true
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+
+server:
+  tomcat:
+    connection-timeout: 40000
+    max-threads: 200
+    min-spare-threads: 20

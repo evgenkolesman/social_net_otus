@@ -9,7 +9,6 @@ import javax.sql.DataSource
 
 @Configuration
 class CommonConfiguration {
-
     @Bean
     fun namedParameterJdbcTemplate(dataSource: DataSource): NamedParameterJdbcTemplate =
         NamedParameterJdbcTemplate(dataSource)
@@ -18,4 +17,6 @@ class CommonConfiguration {
     fun transactionManager(dataSource: DataSource): PlatformTransactionManager =
         DataSourceTransactionManager(dataSource)
 }
+
+
 

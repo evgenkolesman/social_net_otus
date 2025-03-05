@@ -5,10 +5,27 @@ spring:
     #    baseline-on-migrate: true
     default-schema: ${db.schema}
     locations: "classpath:db/migrations"
-  datasource:
-    url:
-    username:
-    password:
+#  datasource:
+#        username:
+#        url:
+#        password:
+#        hikari:
+#          connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+#    master:
+#      username:
+#      url:
+#      password:
+#      hikari:
+#        connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
+#    replicas:
+#      - url:
+#        username:
+#        password:
+#      - url:
+#        username:
+#        password:
+
+
 springdoc:
   api-docs:
     path: "/api-docs"
@@ -31,7 +48,17 @@ management:
       access: read_only
 #      exposure:
 
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    enable:
+      jvm: true
+      jdbc: true
+      web: true
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,prometheus

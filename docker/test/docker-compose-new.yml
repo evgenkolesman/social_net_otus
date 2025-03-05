@@ -1,0 +1,251 @@
+version: "3.9"
+
+x-etcd-base: &etcd-base
+  image: quay.io/coreos/etcd:v3.5.18
+  entrypoint: /usr/local/bin/etcd
+  privileged: true
+  networks:
+    - otus_highload
+  restart: unless-stopped
+  volumes:
+    - etcd-data:/etcd-data
+  environment:
+    ETCD_DATA_DIR: /etcd-data
+    ETCD_INITIAL_CLUSTER_STATE: "new"
+    ETCD_INITIAL_CLUSTER_TOKEN: "my_secret_token"
+    ETCD_ENABLE_V2: "true"
+    ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+    ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+
+x-patroni-base: &patroni-base
+  image: ghcr.io/batonogov/patroni-docker:v4.0.4-pg17.3
+  entrypoint: ["/bin/sh", "/entrypoint.sh"]
+  restart: unless-stopped
+  user: "999:999"
+  volumes:
+    - ./patroni.yml:/patroni.yml:ro
+    - ./entrypoint.sh:/entrypoint.sh:ro
+    - tmp-pgpass:/tmp
+  environment:
+    PATRONI_API_CONNECT_PORT: 8008
+    REPLICATION_NAME: replicator
+    REPLICATION_PASS: replpass
+    SU_NAME: postgres
+    SU_PASS: example
+    POSTGRES_APP_ROLE_PASS: appass
+  networks:
+    - otus_highload
+  depends_on:
+    - etcd0
+    - etcd1
+    - etcd2
+  deploy:
+    resources:
+      limits:
+        cpus: '1'
+        memory: 512m
+  healthcheck:
+    test: ["CMD", "pg_isready -U postgres"]
+    interval: 5s
+    timeout: 3s
+    retries: 3
+
+services:
+  socialnetotus:
+    container_name: socialnetotus
+    build:
+      context: ../..
+    restart: always
+    ports:
+      - 9081:8080
+    depends_on:
+      haproxy:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      db.schema: social_net_otus
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    volumes:
+      - "./application-docker.yml:/opt/social_net_otus/application.yml"
+    networks:
+      - otus_highload
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9090:9090"
+    networks:
+      - otus_highload
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - "3020:3000"
+    networks:
+      - otus_highload
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  etcd0:
+    <<: *etcd-base
+    environment:
+      ETCD_NAME: etcd0
+      ETCD_DATA_DIR: /etcd-data
+      ETCD_INITIAL_CLUSTER_STATE: "new"
+      ETCD_INITIAL_CLUSTER_TOKEN: "my_secret_token"
+      ETCD_ENABLE_V2: "true"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://etcd0:2380"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd0:2379"
+      ETCD_INITIAL_CLUSTER: "etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380"
+    volumes:
+      - etcd-data0:/etcd-data
+
+  etcd1:
+    <<: *etcd-base
+    environment:
+      ETCD_NAME: etcd1
+      ETCD_DATA_DIR: /etcd-data
+      ETCD_INITIAL_CLUSTER_STATE: "new"
+      ETCD_INITIAL_CLUSTER_TOKEN: "my_secret_token"
+      ETCD_ENABLE_V2: "true"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://etcd1:2380"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd1:2379"
+      ETCD_INITIAL_CLUSTER: "etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380"
+    volumes:
+      - etcd-data1:/etcd-data
+
+  etcd2:
+    <<: *etcd-base
+    environment:
+      ETCD_NAME: etcd2
+      ETCD_DATA_DIR: /etcd-data
+      ETCD_INITIAL_CLUSTER_STATE: "new"
+      ETCD_INITIAL_CLUSTER_TOKEN: "my_secret_token"
+      ETCD_ENABLE_V2: "true"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://etcd2:2380"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd2:2379"
+      ETCD_INITIAL_CLUSTER: "etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380"
+    volumes:
+      - etcd-data2:/etcd-data
+
+  patroni:
+    <<: *patroni-base
+    volumes:
+      - patroni-data:/var/lib/patroni/main
+      - ./patroni.yml:/patroni.yml:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+      - tmp-pgpass:/tmp
+
+  patroni1:
+    <<: *patroni-base
+    volumes:
+      - patroni-data1:/var/lib/patroni/main
+      - ./patroni.yml:/patroni.yml:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+      - tmp-pgpass:/tmp
+
+  patroni2:
+    <<: *patroni-base
+    volumes:
+      - patroni-data2:/var/lib/patroni/main
+      - ./patroni.yml:/patroni.yml:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+      - tmp-pgpass:/tmp
+
+  haproxy:
+    image: haproxy:3.1.3-alpine
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - 5446:5432
+      - 8182:8080
+    restart: unless-stopped
+    networks:
+      - otus_highload
+    depends_on:
+      - patroni
+      - patroni1
+      - patroni2
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64m
+    healthcheck:
+      test: ["CMD", "haproxy", "-c", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  otus_highload:
+    driver: bridge
+
+volumes:
+  social_net_otus:
+    external: false
+  grafana:
+    external: false
+  prometheus_data:
+    external: false
+  patroni-data:
+    external: false
+  patroni-data1:
+    external: false
+  patroni-data2:
+    external: false
+  etcd-data0:
+    external: false
+  etcd-data1:
+    external: false
+  etcd-data2:
+    external: false
+  tmp-pgpass:
+   external: false
