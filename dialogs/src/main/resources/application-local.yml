@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: dialogs_service
+    url: jdbc:postgresql://localhost:5777/dialog
+    password: dialogs_password
+

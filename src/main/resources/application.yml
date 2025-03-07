@@ -5,6 +5,8 @@ spring:
     #    baseline-on-migrate: true
     default-schema: ${db.schema}
     locations: "classpath:db/migrations"
+  cache:
+    type: caffeine
 #  datasource:
 #        username:
 #        url:
@@ -24,7 +26,6 @@ spring:
 #      - url:
 #        username:
 #        password:
-
 
 springdoc:
   api-docs:
@@ -62,3 +63,8 @@ management:
     web:
       exposure:
         include: health,info,prometheus
+server:
+  compression:
+    enabled: true
+    min-response-size: 2048
+

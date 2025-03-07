@@ -1,6 +1,8 @@
 spring:
   application:
     name: socialnetotus
+  cache:
+    type: caffeine
   datasource:
     url: jdbc:postgresql://haproxy:5432/social_net_otus?currentSchema=${db.schema}
     username: "postgres"

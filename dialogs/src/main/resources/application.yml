@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: dialogs
+  datasource:
+    username:
+    url:
+    password:
+  flyway:
+    default-schema: ${db.schema}
+    locations: "classpath:db/migrations"
+
+
+
+app:
+  sharding:
+    total-shards: 32
+    default-shard: 0

@@ -18,14 +18,14 @@ fun main() {
     // Получаем список пользователей
     val userIds = mutableListOf<Int>()
     connection.createStatement().use { stmt ->
-        val rs = stmt.executeQuery("SELECT user_id sno_user_register users")
+        val rs = stmt.executeQuery("SELECT user_id FROM social_net_otus.sno_user_register LIMIT 500000")
         while (rs.next()) {
             userIds.add(rs.getInt("id"))
         }
     }
 
     // Загружаем посты из файла
-    val posts = File("posts.txt").readLines().filter { it.isNotBlank() }
+    val posts = File("../../posts.txt").readLines().filter { it.isNotBlank() }
     if (posts.isEmpty() || userIds.isEmpty()) {
         println("Ошибка: нет данных для вставки!")
         return
@@ -34,7 +34,7 @@ fun main() {
     // Вставляем посты
     val insertSQL = "INSERT INTO posts (login, text_post, time_modified, active) VALUES (?, ?, ?, ?)"
     connection.prepareStatement(insertSQL).use { stmt ->
-        userIds.forEach { userId ->
+        userIds.forEach {  userId ->
             val selectedPosts = posts.shuffled().take(10)  // 10 случайных постов
             selectedPosts.forEach { post ->
                 stmt.setInt(1, userId)
