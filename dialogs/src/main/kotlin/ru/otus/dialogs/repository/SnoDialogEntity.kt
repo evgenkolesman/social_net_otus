@@ -8,7 +8,7 @@ import java.time.Instant
 import java.util.*
 
 @Table("sno_dialogs")
-data class SnoDilaogEntity(
+data class SnoDialogEntity(
     @Id
     @Column("id")
      val iden: UUID? = null,

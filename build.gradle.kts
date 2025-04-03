@@ -31,6 +31,9 @@ dependencies {
     val mapStructVersion = "1.6.3"
     val jacksonOpenApiNullable = "0.2.6"
     val springdocOpenApiVersion = "2.3.0"
+
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation ("com.fasterxml.jackson.core:jackson-databind")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenApiVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator")

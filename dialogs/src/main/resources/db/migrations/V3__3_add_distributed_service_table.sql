@@ -1,1 +1,1 @@
-SELECT create_distributed_table('dialogs', 'user_id');
+SELECT create_distributed_table('sno_dialogs', 'id');

@@ -1,9 +1,11 @@
 package ru.otus.dialogs.service.event
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
 import java.time.Instant
 import java.util.UUID
 
-data class SnoDilaogEvent(
+@JsonAutoDetect
+data class SnoDialogEvent(
 
     val id: UUID? = null,
     val from: String,

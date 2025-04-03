@@ -7,6 +7,15 @@ spring:
     locations: "classpath:db/migrations"
   cache:
     type: caffeine
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: group_1
+
+    producer:
+      request:
+        timeout:
+          ms: 1000
 #  datasource:
 #        username:
 #        url:
