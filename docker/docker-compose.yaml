@@ -85,6 +85,7 @@ services:
       - "./application-docker.yml:/opt/socialnetotus/application.yml"
     networks:
       - otus_highload
+
   #TEST
   #  ab_tester:
   #    container_name: ab_tester
@@ -96,6 +97,7 @@ services:
   #      - social_net_otus
   #    networks:
   #      - otus_highload
+
 #METRICS
   prometheus:
     image: prom/prometheus:latest
@@ -357,10 +359,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      spring.datasource.url: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=dialogs
-      spring.datasource.username: dialog_service
-      spring.datasource.password: dialog_password
-      db.schema: dialogs
+      SPRING_DATASOURCE_URL: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=dialogs
+      SPRING_DATASOURCE_USERNAME: dialog_service
+      SPRING_DATASOURCE_PASSWORD: dialog_password
+      DB_SCHEMA: dialogs
     #    healthcheck:
     #      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
     #      interval: 20s

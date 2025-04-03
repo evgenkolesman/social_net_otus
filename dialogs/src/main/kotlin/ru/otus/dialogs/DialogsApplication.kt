@@ -2,10 +2,12 @@ package ru.otus.dialogs
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories
 import org.springframework.kafka.annotation.EnableKafka
 
 @SpringBootApplication
 @EnableKafka
+@EnableJdbcRepositories
 class DialogsApplication
 
 fun main(args: Array<String>) {

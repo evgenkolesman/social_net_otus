@@ -7,7 +7,7 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
 import java.util.*
 
-@Table("sno_dialogs")
+@Table(name = "sno_dialogs", schema = "\${db.schema}")
 data class SnoDialogEntity(
     @Id
     @Column("id")

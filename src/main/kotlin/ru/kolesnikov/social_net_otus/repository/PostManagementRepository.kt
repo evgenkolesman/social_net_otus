@@ -2,16 +2,18 @@ package ru.kolesnikov.social_net_otus.repository
 
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import ru.kolesnikov.social_net_otus.entity.PostManagementEntity
 import ru.kolesnikov.social_net_otus.model.Post
 import java.math.BigDecimal
 import java.util.*
 
+@Repository
 interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> {
 
     @Query(
         """
-        UPDATE sno_posts 
+        UPDATE social_net_otus.sno_posts 
         SET active = false
         WHERE id = :id
         RETURNING id
@@ -21,7 +23,7 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        UPDATE sno_posts 
+        UPDATE social_net_otus.sno_posts 
         SET text_post = :text
         WHERE id = :id
         RETURNING id
@@ -31,7 +33,7 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        SELECT id, text_post as "text" FROM sno_posts limit :limit offset :offset  
+        SELECT id, text_post as "text" FROM social_net_otus.sno_posts limit :limit offset :offset  
     """
     )
     fun getWithLimitAndOffset(offset: BigDecimal, limit: BigDecimal): List<Post>

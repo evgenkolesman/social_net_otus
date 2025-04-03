@@ -1,21 +1,11 @@
 spring:
   application:
     name: dialogs
-  datasource:
-    username:
-    url:
-    password:
   flyway:
     default-schema: ${db.schema}
     locations: "classpath:db/migrations"
   devtools:
     add-properties: false
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: group_1
-
 
 app:
   sharding:

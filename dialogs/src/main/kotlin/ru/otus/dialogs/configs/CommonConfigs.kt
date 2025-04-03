@@ -20,7 +20,6 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableJdbcAuditing
-@EnableJdbcRepositories
 class CommonConfigs {
 
     @Bean

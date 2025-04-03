@@ -4,3 +4,7 @@ spring:
     url: jdbc:postgresql://localhost:5777/dialog
     password: dialog_password
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: group_1

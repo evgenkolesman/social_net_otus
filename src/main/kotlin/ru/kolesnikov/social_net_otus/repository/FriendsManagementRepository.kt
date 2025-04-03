@@ -2,14 +2,16 @@ package ru.kolesnikov.social_net_otus.repository
 
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import ru.kolesnikov.social_net_otus.entity.FriendsManagementEntity
 import java.util.*
 
+@Repository
 interface FriendsManagementRepository : CrudRepository<FriendsManagementEntity, Long?> {
 
     @Query(
         """
-        UPDATE sno_friends
+        UPDATE social_net_otus.sno_friends
         SET active = false
         WHERE (first_login = :currentLogin OR second_login = :currentLogin) 
         AND (first_login = :userId OR second_login = :userId) 
@@ -20,7 +22,7 @@ interface FriendsManagementRepository : CrudRepository<FriendsManagementEntity, 
 
     @Query(
         """
-        SELECT coalesce((SELECT 1 FROM sno_friends
+        SELECT coalesce((SELECT 1 FROM social_net_otus.sno_friends
         WHERE (first_login = :currentLogin OR second_login = :currentLogin)
           AND (first_login = :userId OR second_login = :userId)
           AND active = true), -1) = 1
@@ -30,7 +32,7 @@ interface FriendsManagementRepository : CrudRepository<FriendsManagementEntity, 
 
     @Query(
         """
-        INSERT INTO sno_friends(first_login, second_login, active )
+        INSERT INTO social_net_otus.sno_friends(first_login, second_login, active )
          VALUES (:currentLogin, :userId, true) returning id
     """
     )

@@ -11,7 +11,7 @@ interface SnoDialogRepository: ListCrudRepository<SnoDialogEntity, UUID?> {
 // TODO Add pagination
     @Query(
         """
-            SELECT * FROM dialog.dialogs.sno_dialogs
+            SELECT * FROM dialogs.sno_dialogs
             WHERE "from" = :from AND "to" = :to
             LIMIT 100
         """
