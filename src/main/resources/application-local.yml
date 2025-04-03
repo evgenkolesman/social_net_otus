@@ -29,7 +29,6 @@ db:
 #logging:
 #  level:
 #    sql: debug
-
 rsa:
   private-key: classpath:private-key.pem
   public-key: classpath:public-key.pem

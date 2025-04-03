@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.data.domain.AuditorAware
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.transaction.PlatformTransactionManager
@@ -19,7 +20,9 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableJdbcAuditing
+@EnableJdbcRepositories
 class CommonConfigs {
+
     @Bean
     fun namedParameterJdbcTemplate(dataSource: DataSource): NamedParameterJdbcTemplate =
         NamedParameterJdbcTemplate(dataSource)
