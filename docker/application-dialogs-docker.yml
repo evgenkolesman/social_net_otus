@@ -2,14 +2,14 @@ spring:
   application:
     name: dialogs
   datasource:
-#    username: dialog_service
-#    url: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=${db.schema}
-#    password: dialog_password
+    username: dialog_service
+    url: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=${db.schema}
+    password: dialog_password
     driver-class-name: org.postgresql.Driver
-#    hikari:
-#      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema};
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema};
   flyway:
-    default-schema: social_net_otus
+    default-schema: ${db.schema}
     locations: "classpath:db/migrations"
   devtools:
     add-properties: false
@@ -17,7 +17,8 @@ spring:
     bootstrap-servers: broker:29092
     consumer:
       group-id: group_1
-
+db:
+  schema: dialogs
 #logging:
 #  level:
 #    root: debug

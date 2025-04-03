@@ -68,8 +68,8 @@ services:
       - broker
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    environment:
-      db.schema: social_net_otus
+#    environment:
+#      db.schema: social_net_otus
     #    healthcheck:
     #      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
     #      interval: 20s
@@ -349,7 +349,7 @@ services:
     container_name: dialogs
     build:
       context: ../dialogs/
-    restart: no
+    restart: always
     ports:
       - 9082:8080
     depends_on:
@@ -358,11 +358,11 @@ services:
       - broker
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=dialogs
-      SPRING_DATASOURCE_USERNAME: dialog_service
-      SPRING_DATASOURCE_PASSWORD: dialog_password
-      DB_SCHEMA: dialogs
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://citus-coordinator:5432/dialog?currentSchema=${DB_SCHEMA}
+#      SPRING_DATASOURCE_USERNAME: dialog_service
+#      SPRING_DATASOURCE_PASSWORD: dialog_password
+#      DB_SCHEMA: dialogs
     #    healthcheck:
     #      test: [ "CMD", "wget http://localhost:8080/actuator/health | grep UP" ]
     #      interval: 20s

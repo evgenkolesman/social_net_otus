@@ -13,7 +13,7 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        UPDATE social_net_otus.sno_posts 
+        UPDATE sno_posts 
         SET active = false
         WHERE id = :id
         RETURNING id
@@ -23,7 +23,7 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        UPDATE social_net_otus.sno_posts 
+        UPDATE sno_posts 
         SET text_post = :text
         WHERE id = :id
         RETURNING id
@@ -33,7 +33,7 @@ interface PostManagementRepository : CrudRepository<PostManagementEntity, UUID> 
 
     @Query(
         """
-        SELECT id, text_post as "text" FROM social_net_otus.sno_posts limit :limit offset :offset  
+        SELECT id, text_post as "text" FROM sno_posts limit :limit offset :offset  
     """
     )
     fun getWithLimitAndOffset(offset: BigDecimal, limit: BigDecimal): List<Post>

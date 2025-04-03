@@ -67,3 +67,6 @@ server:
     connection-timeout: 40000
     max-threads: 200
     min-spare-threads: 20
+
+db:
+  schema: social_net_otus
