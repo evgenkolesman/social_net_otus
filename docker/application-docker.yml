@@ -18,6 +18,9 @@ spring:
     #    baseline-on-migrate: true
     default-schema: ${db.schema}
     locations: "classpath:db/migrations"
+  zipkin:
+    base-url: http://zipkin-ui:9411
+#    base-url: http://localhost:9411
 #    master:
 #      url: jdbc:postgresql://social_net_otus_db:5432/social_net_otus?currentSchema=${db.schema}
 #      username: "postgres"
@@ -46,6 +49,12 @@ springdoc:
     url: "/openapi.yml"
 
 management:
+  export:
+    otlp:
+      enabled: true
+#      endpoint: otel-collector:4318
+#      endpoint: http://otel-collector:4317
+      endpoint: http://host.docker.internal:4317
   metrics:
     distribution:
       percentiles-histogram:
@@ -70,3 +79,15 @@ server:
 
 db:
   schema: social_net_otus
+otel:
+  exporter:
+    otlp:
+#      endpoint: http://otel-collector:4318
+      endpoint: http://host.docker.internal:4318
+    zipkin:
+      enabled: true
+  traces:
+    sampler: always_on
+    exporter: zipkin
+  resource:
+    attributes: "service.name=${spring.application.name}"
