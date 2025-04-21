@@ -73,6 +73,8 @@ otel:
       endpoint: http://localhost:4317
   resource:
     attributes: "service.name=${spring.application.name}"
+  metrics:
+    exporter: none
 
 #    attributes: service.name=${spring.application.name}
 

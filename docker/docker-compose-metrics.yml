@@ -60,8 +60,8 @@ services:
         - otus_highload
       volumes:
         - ./otel-config.yaml:/etc/otelcol-contrib/config.yaml
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
+#      extra_hosts:
+#        - "host.docker.internal:host-gateway"
 
 volumes:
   grafana:

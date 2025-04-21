@@ -59,6 +59,8 @@ dependencies {
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:2.8.0")
     implementation("io.opentelemetry:opentelemetry-exporter-zipkin:1.49.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-kafka-clients-2.6:2.8.0-alpha")
+//    implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.49.0")
 //    implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.49.0")
 
     runtimeOnly("com.github.loki4j:loki-logback-appender:1.5.2")
