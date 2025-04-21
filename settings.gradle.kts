@@ -1,4 +1,4 @@
-rootProject.name = "social_net_otus"
+rootProject.name = "socialnetotus"
 pluginManagement {
     buildscript {
         repositories {

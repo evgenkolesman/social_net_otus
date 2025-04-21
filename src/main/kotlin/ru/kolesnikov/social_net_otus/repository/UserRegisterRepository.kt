@@ -2,9 +2,11 @@ package ru.kolesnikov.social_net_otus.repository
 
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import ru.kolesnikov.social_net_otus.entity.UserRegisterEntity
 import java.util.*
 
+@Repository
 interface UserRegisterRepository : CrudRepository<UserRegisterEntity, UUID?> {
     @Query(
         """

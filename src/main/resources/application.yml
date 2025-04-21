@@ -1,31 +1,24 @@
 spring:
   application:
-    name: social_net_otus
+    name: socialnetotus
   flyway:
     #    baseline-on-migrate: true
     default-schema: ${db.schema}
     locations: "classpath:db/migrations"
-#  datasource:
-#        username:
-#        url:
-#        password:
-#        hikari:
-#          connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
-#    master:
-#      username:
-#      url:
-#      password:
-#      hikari:
-#        connection-init-sql: CREATE SCHEMA IF NOT EXISTS ${db.schema}
-#    replicas:
-#      - url:
-#        username:
-#        password:
-#      - url:
-#        username:
-#        password:
+  cache:
+    type: caffeine
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: group_1
 
+    producer:
+      request:
+        timeout:
+          ms: 1000
 
+  zipkin:
+    base-url: http://localhost:9411
 springdoc:
   api-docs:
     path: "/api-docs"
@@ -49,6 +42,10 @@ management:
 #      exposure:
 
   metrics:
+    export:
+      otlp:
+        enabled: true
+        endpoint: http://localhost:4317
     distribution:
       percentiles-histogram:
         http:
@@ -62,3 +59,22 @@ management:
     web:
       exposure:
         include: health,info,prometheus
+server:
+  compression:
+    enabled: true
+    min-response-size: 2048
+
+otel:
+  traces:
+    sampler: always_on
+    exporter: zipkin
+  exporter:
+    otlp:
+      endpoint: http://localhost:4317
+  resource:
+    attributes: "service.name=${spring.application.name}"
+  metrics:
+    exporter: none
+
+#    attributes: service.name=${spring.application.name}
+

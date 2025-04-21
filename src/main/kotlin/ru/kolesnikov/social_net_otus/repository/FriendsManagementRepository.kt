@@ -2,9 +2,10 @@ package ru.kolesnikov.social_net_otus.repository
 
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import ru.kolesnikov.social_net_otus.entity.FriendsManagementEntity
-import java.util.*
 
+@Repository
 interface FriendsManagementRepository : CrudRepository<FriendsManagementEntity, Long?> {
 
     @Query(

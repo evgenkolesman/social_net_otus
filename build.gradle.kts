@@ -31,6 +31,9 @@ dependencies {
     val mapStructVersion = "1.6.3"
     val jacksonOpenApiNullable = "0.2.6"
     val springdocOpenApiVersion = "2.3.0"
+
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation ("com.fasterxml.jackson.core:jackson-databind")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenApiVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -50,7 +53,17 @@ dependencies {
     implementation("org.webjars:js-cookie:2.1.0")
     implementation("org.postgresql:postgresql")
     implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("io.micrometer:micrometer-registry-otlp")
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+//    implementation("io.zipkin.contrib.otel:encoder-brave")
+    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:2.8.0")
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin:1.49.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-kafka-clients-2.6:2.8.0-alpha")
+//    implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.49.0")
+//    implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.49.0")
 
+    runtimeOnly("com.github.loki4j:loki-logback-appender:1.5.2")
 
 
     compileOnly("org.projectlombok:lombok")
@@ -65,7 +78,11 @@ dependencies {
 
 
 
-
+//dependencyManagement {
+//    imports {
+//        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.15.0")
+//    }
+//}
 
 kotlin {
     compilerOptions {
